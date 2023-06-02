@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Age Calculator</title>
+  <style>
+      body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(45deg, #ff9d00, #ffcd75, #ff9d00);
+      background-size: 400% 400%;
+      animation: gradientAnimation 10s ease infinite;
+      margin: 0;
+      padding: 0;
+    }
+    
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    
+    h1 {
+      margin-top: 50px;
+      color: #333;
+      font-size: 32px;
+      animation: rainbowText 5s linear infinite;
+    }
+    
+    @keyframes rainbowText {
+      0% {
+        color: red;
+      }
+      14% {
+        color: orange;
+      }
+      28% {
+        color: yellow;
+      }
+      42% {
+        color: green;
+      }
+      57% {
+        color: blue;
+      }
+      71% {
+        color: indigo;
+      }
+      85% {
+        color: violet;
+      }
+      100% {
+        color: red;
+      }
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 30px auto;
+      background-color: #fff;
+      padding: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+      animation: slideInLeft 0.5s ease;
+    }
+    
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    input[type="date"] {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      background-color: #f5f5f5;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      animation: slideInRight 0.5s ease;
+    }
+    
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      animation: glowButton 1.5s linear infinite;
+    }
+    
+    @keyframes glowButton {
+      0% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 0, 0, 0.3);
+      }
+      100% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+    }
+    
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #333;
+      animation: fadeIn 1s ease;
+    }
+    
+    .card {
+      background: linear-gradient(45deg, #e0aaff, #ffcd75);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-content {
+      background-color: #fff;
+      margin: 20% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease;
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      animation: fadeIn 1s ease;
+    }
+    
+    .close:hover {
+      color: #555;
+    }
+    
+    .message-animation {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typeWriter 2s steps(40) 1s 1 normal both;
+      color: #333;
+    }
+    
+    @keyframes typeWriter {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Age Calculator</h1>
+    <label for="birthdate">Select or enter your birthdate:</label>
+    <input type="date" id="birthdate">
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div id="result"></div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Your Funny Message</h2>
+      <p class="message-animation"></p>
+      <h3>Special Events:</h3>
+      <ul id="special-events"></ul>
+      <h3>Hindu Month:</h3>
+      <p id="hindu-month"></p>
+      <h3>Christian Month:</h3>
+      <p id="christian-month"></p>
+      <h3>Muslim Month:</h3>
+      <p id="muslim-month"></p>
+      <h3>Greek Month:</h3>
+      <p id="greek-month"></p>
+      <h3>Egyptian Month:</h3>
+      <p id="egypt-month"></p>
+      <h3>News from this Day:</h3>
+      <ul id="news"></ul>
+    </div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      var birthdateInput = document.getElementById("birthdate");
+      var birthdate = new Date(birthdateInput.value);
+      var today = new Date();
+      
+      if (birthdateInput.value === "") {
+        document.getElementById("result").innerHTML = "Please enter a valid birthdate.";
+        return;
+      }
+      
+      if (birthdate > today) {
+        document.getElementById("result").innerHTML = "You entered a future date!";
+        return;
+      }
+      
+      var age = today.getFullYear() - birthdate.getFullYear();
+      var birthMonth = birthdate.getMonth();
+      var todayMonth = today.getMonth();
+      
+      if (todayMonth < birthMonth || (todayMonth === birthMonth && today.getDate() < birthdate.getDate())) {
+        age--;
+      }
+      
+      var years = age;
+      var months = todayMonth - birthMonth;
+      var days = today.getDate() - birthdate.getDate();
+      
+      if (days < 0) {
+        months--;
+        var lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 0);
+        days += lastMonth.getDate();
+      }
+      
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+      
+      var randomMessages = [
+        "Congratulations on surviving another trip around the sun!",
+        "Age is just a number, and you're rocking it!",
+        "You're like a fine wine, you get better with age!",
+        "Getting older is like leveling up in the game of life!",
+        "Don't worry about getting older, you're still young at heart!",
+        "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        "Why don't skeletons fight each other? They don't have the guts!",
+        "Why don't scientists trust atoms? Because they make up everything!",
+        "Why did the bicycle fall over? It was two-tired!",
+        "Why don't some couples go to the gym? Because some relationships don't work out!",
+        "Why don't scientists trust atoms? Because they make up everything!",
+        "Why don't some couples go to the gym? Because some relationships don't work out!",
+        "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        "Why don't skeletons fight each other? They don't have the guts!",
+        "Why did the bicycle fall over? It was two-tired!",
+        "Why don't scientists trust atoms? Because they make up everything!",
+        "Why don't some couples go to the gym? Because some relationships don't work out!",
+        "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        "Why don't skeletons fight each other? They don't have the guts!",
+        "Why did the bicycle fall over? It was two-tired!"
+      ];
+      
+      var randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+      
+      var result = "<strong>You are " + years + " years, " + months + " months, and " + days + " days old.</strong><br><br>";
+      result += "<button onclick=\"openModal('" + randomMessage + "')\">Show Funny Message</button>";
+      
+      // Get special events and months
+      var dateStr = (birthdate.getMonth() + 1) + "/" + birthdate.getDate();
+      var specialEvents = getSpecialEvents(dateStr);
+      var hinduMonth = getHinduMonth(dateStr);
+      var christianMonth = getChristianMonth(dateStr);
+      var muslimMonth = getMuslimMonth(dateStr);
+      var greekMonth = getGreekMonth(dateStr);
+      var egyptMonth = getEgyptMonth(dateStr);
+      var news = getNews(dateStr);
+      
+      result += "<h3>Special Events:</h3>";
+      if (specialEvents.length === 0) {
+        result += "No special events found on this day.";
+      } else {
+        result += "<ul>";
+        specialEvents.forEach(function(event) {
+          result += "<li>" + event + "</li>";
+        });
+        result += "</ul>";
+      }
+      
+      result += "<h3>Hindu Month:</h3>";
+      result += hinduMonth ? hinduMonth : "No Hindu month found on this day.";
+      
+      result += "<h3>Christian Month:</h3>";
+      result += christianMonth ? christianMonth : "No Christian month found on this day.";
+      
+      result += "<h3>Muslim Month:</h3>";
+      result += muslimMonth ? muslimMonth : "No Muslim month found on this day.";
+      
+      result += "<h3>Greek Month:</h3>";
+      result += greekMonth ? greekMonth : "No Greek month found on this day.";
+      
+      result += "<h3>Egyptian Month:</h3>";
+      result += egyptMonth ? egyptMonth : "No Egyptian month found on this day.";
+      
+      document.getElementById("result").innerHTML = result;
+      document.getElementById("special-events").innerHTML = specialEvents.length > 0 ? specialEvents.join("") : "No special events found on this day.";
+      document.getElementById("hindu-month").innerHTML = hinduMonth ? hinduMonth : "No Hindu month found on this day.";
+      document.getElementById("christian-month").innerHTML = christianMonth ? christianMonth : "No Christian month found on this day.";
+      document.getElementById("muslim-month").innerHTML = muslimMonth ? muslimMonth : "No Muslim month found on this day.";
+      document.getElementById("greek-month").innerHTML = greekMonth ? greekMonth : "No Greek month found on this day.";
+      document.getElementById("egypt-month").innerHTML = egyptMonth ? egyptMonth : "No Egyptian month found on this day.";
+      document.getElementById("news").innerHTML = news.length > 0 ? news.join("") : "No news found on this day.";
+    }
+    
+    function getSpecialEvents(dateStr) {
+      var specialEvents = {
+        "1/1": ["New Year's Day"],
+        "3/8": ["International Women's Day"],
+        "4/22": ["Earth Day"],
+        "12/25": ["Christmas"]
+      };
+      
+      return specialEvents[dateStr] || [];
+    }
+    
+    function getHinduMonth(dateStr) {
+      var hinduMonths = {
+        "1/1": "Chaitra",
+        "2/1": "Vaishakha",
+        "3/1": "Jyeshtha",
+        "4/1": "Ashadha",
+        "5/1": "Shravana",
+        "6/1": "Bhadrapada",
+        "7/1": "Ashwin",
+        "8/1": "Kartik",
+        "9/1": "Margashirsha",
+        "10/1": "Paush",
+        "11/1": "Magha",
+        "12/1": "Phalguna"
+      };
+      
+      return hinduMonths[dateStr];
+    }
+    
+    function getChristianMonth(dateStr) {
+      var christianMonths = {
+        "1/1": "January",
+        "2/1": "February",
+        "3/1": "March",
+        "4/1": "April",
+        "5/1": "May",
+        "6/1": "June",
+        "7/1": "July",
+        "8/1": "August",
+        "9/1": "September",
+        "10/1": "October",
+        "11/1": "November",
+        "12/1": "December"
+      };
+      
+      return christianMonths[dateStr];
+    }
+    
+    function getMuslimMonth(dateStr) {
+      var muslimMonths = {
+        "1/1": "Muharram",
+        "2/1": "Safar",
+        "3/1": "Rabi' al-Awwal",
+        "4/1": "Rabi' al-Thani",
+        "5/1": "Jumada al-Ula",
+        "6/1": "Jumada al-Akhirah",
+        "7/1": "Rajab",
+        "8/1": "Sha'ban",
+        "9/1": "Ramadan",
+        "10/1": "Shawwal",
+        "11/1": "Dhu al-Qidah",
+        "12/1": "Dhu al-Hijjah"
+      };
+      
+      return muslimMonths[dateStr];
+    }
+    
+    function getGreekMonth(dateStr) {
+      var greekMonths = {
+        "1/1": "Hekatombaion",
+        "2/1": "Metageitnion",
+        "3/1": "Boedromion",
+        "4/1": "Pyanepsion",
+        "5/1": "Maimakterion",
+        "6/1": "Poseideon",
+        "7/1": "Gamelion",
+        "8/1": "Anthesterion",
+        "9/1": "Elaphebolion",
+        "10/1": "Mounikhion",
+        "11/1": "Thargelion",
+        "12/1": "Skirophorion"
+      };
+      
+      return greekMonths[dateStr];
+    }
+    
+    function getEgyptMonth(dateStr) {
+      var egyptMonths = {
+        "1/1": "Thoth",
+        "2/1": "Phaophi",
+        "3/1": "Hathor",
+        "4/1": "Ka'ankh",
+        "5/1": "Tubi",
+        "6/1": "Meshir",
+        "7/1": "Paremoude",
+        "8/1": "Pashons",
+        "9/1": "Paoni",
+        "10/1": "Epip",
+        "11/1": "Mesore",
+        "12/1": "Epagomenal Days"
+      };
+      
+      return egyptMonths[dateStr];
+    }
+    
+    function getNews(dateStr) {
+      var news = {
+        "1/1": ["News 1", "News 2"],
+        "2/1": ["News 3"],
+        "3/1": ["News 4", "News 5"],
+        "4/1": ["News 6"],
+        "5/1": ["News 7"],
+        "6/1": ["News 8", "News 9"],
+        "7/1": ["News 10"],
+        "8/1": [],
+        "9/1": ["News 11"],
+        "10/1": ["News 12", "News 13"],
+        "11/1": [],
+        "12/1": ["News 14"]
+      };
+      
+      return news[dateStr] || [];
+    }
+    
+    function openModal(message) {
+      var modal = document.getElementById("modal");
+      var messageElement = document.querySelector(".message-animation");
+      modal.style.display = "block";
+      messageElement.textContent = "";
+      
+      animateMessage(message, messageElement);
+    }
+    
+    function closeModal() {
+      var modal = document.getElementById("modal");
+      modal.style.display = "none";
+    }
+    
+    function animateMessage(message, element) {
+      var index = 0;
+      var timer = setInterval(function() {
+        if (index === message.length) {
+          clearInterval(timer);
+          return;
+        }
+        
+        element.textContent += message.charAt(index);
+        index++;
+      }, 100);
+    }
+  </script>
+</body>
+</html>
